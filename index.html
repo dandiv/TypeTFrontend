@@ -20,8 +20,8 @@
       />
     </head>
     <body>
-      <div id="content">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div id="content" class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark row">
           <div class="container-fluid">
             <button
               class="navbar-toggler"
@@ -55,6 +55,7 @@
               <div class="d-flex">
                 <button
                   type="button"
+                  id="logoutBtn"
                   class="btn d-flex flex-row-reverse btn-outline-light"
                 >
                   Logout
@@ -90,17 +91,6 @@
                   >
                 </li>
               </ul>
-              <form class="d-flex">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="btn btn-outline-success" type="submit">
-                  Search
-                </button>
-              </form>
             </div>
           </div>
         </nav>
