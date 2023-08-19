@@ -3,6 +3,8 @@ const firstEnterDiv = document.getElementById("firstEnter");
 const loginButton = document.getElementById("loginBtn");
 const logoutButton = document.getElementById("logoutBtn");
 
+// Handle login and navigation
+
 // Check if the user is already logged in on page load
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
@@ -45,3 +47,79 @@ function isValidLogin(username, password) {
   // For demonstration purposes, return true
   return true;
 }
+
+// Create cards dynamically
+const cards = [
+  {
+    title: "Funky T-shirt",
+    description: "very very cool",
+    price: 87,
+    img: "./assets/tshirt.jpeg",
+  },
+  {
+    title: "Funky T-shirt",
+    description: "very very cool",
+    price: 87,
+    img: "./assets/tshirt.jpeg",
+  },
+  {
+    title: "Funky T-shirt",
+    description: "very very cool",
+    price: 87,
+    img: "./assets/tshirt.jpeg",
+  },
+  {
+    title: "Funky T-shirt",
+    description: "very very cool",
+    price: 87,
+    img: "./assets/tshirt.jpeg",
+  },
+  {
+    title: "Funky T-shirt",
+    description: "very very cool",
+    price: 87,
+    img: "./assets/tshirt.jpeg",
+  },
+  {
+    title: "Funky T-shirt",
+    description: "very very cool",
+    price: 87,
+    img: "./assets/tshirt.jpeg",
+  },
+];
+
+const container = document.getElementById("cardsInfo");
+const gridRow = document.getElementById("cardsInfo");
+
+function createGridItems() {
+  var currentRow = document.createElement("div");
+  currentRow.classList.add("row", "m-4");
+  container.appendChild(currentRow);
+
+  cards.forEach((result, idx) => {
+    const colDiv = document.createElement("div");
+    colDiv.classList.add("col-md-3");
+
+    // Construct card content
+    colDiv.innerHTML = `
+      <div class="col p-3">
+        <div class="card">
+          <img src=${result.img} class="card-img-top" alt="itemInage">
+          <div class="card-body">
+            <h5 class="card-title">${result.title}</h5>
+            <p class="card-text">${result.description}</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">${result.price} ₪</li>
+          </ul>
+          <div class="card-body">
+            <a href="#" class="card-link">Buy Now</a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    currentRow.appendChild(colDiv);
+  });
+}
+createGridItems();
