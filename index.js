@@ -113,7 +113,7 @@ function createGridItems() {
             <li class="list-group-item">${result.price} ₪</li>
           </ul>
           <div class="card-body">
-            <a href="#" class="card-link">Buy Now</a>
+            <button type="button" class="btn btn-secondary">Buy Now</button>
           </div>
         </div>
       </div>
