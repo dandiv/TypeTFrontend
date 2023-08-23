@@ -114,6 +114,7 @@ function createGridItems() {
           </ul>
           <div class="card-body">
             <button type="button" class="btn btn-secondary">Buy Now</button>
+            <button type="button" class="btn btn-secondary" onclick="navigateToSection('cart.html')">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -122,4 +123,12 @@ function createGridItems() {
     currentRow.appendChild(colDiv);
   });
 }
+
+function navigateToSection(url) {
+  window.location.href = url;
+  if (section) {
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 createGridItems();
