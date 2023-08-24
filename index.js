@@ -49,44 +49,57 @@ function isValidLogin(username, password) {
 }
 
 // Create cards dynamically
-const cards = [
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-];
+// const cards = [
+//   {
+//     title: "Funky T-shirt",
+//     description: "very very cool",
+//     price: 87,
+//     img: "./assets/tshirt.jpeg",
+//   },
+//   {
+//     title: "Funky T-shirt",
+//     description: "very very cool",
+//     price: 87,
+//     img: "./assets/tshirt.jpeg",
+//   },
+//   {
+//     title: "Funky T-shirt",
+//     description: "very very cool",
+//     price: 87,
+//     img: "./assets/tshirt.jpeg",
+//   },
+//   {
+//     title: "Funky T-shirt",
+//     description: "very very cool",
+//     price: 87,
+//     img: "./assets/tshirt.jpeg",
+//   },
+//   {
+//     title: "Funky T-shirt",
+//     description: "very very cool",
+//     price: 87,
+//     img: "./assets/tshirt.jpeg",
+//   },
+//   {
+//     title: "Funky T-shirt",
+//     description: "very very cool",
+//     price: 87,
+//     img: "./assets/tshirt.jpeg",
+//   },
+// ];
+
+let cards = [];
+
+$(document).ready(function () {
+  $.get("http://localhost:3000/items", function (data) {
+    // Handle the successful response here
+    cards = data;
+    createGridItems();
+  }).fail(function (xhr, status, error) {
+    // Handle any errors here
+    console.error(error);
+  });
+});
 
 const container = document.getElementById("cardsInfo");
 const gridRow = document.getElementById("cardsInfo");
@@ -114,7 +127,7 @@ function createGridItems() {
           </ul>
           <div class="card-body">
             <button type="button" class="btn btn-secondary">Buy Now</button>
-            <button type="button" class="btn btn-secondary" onclick="navigateToSection('cart.html')">Add to Cart</button>
+            <button type="button" class="btn btn-secondary add-to-cart">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -124,11 +137,37 @@ function createGridItems() {
   });
 }
 
+createGridItems();
+
 function navigateToSection(url) {
   window.location.href = url;
-  if (section) {
-    section.scrollIntoView({ behavior: "smooth" });
-  }
 }
 
-createGridItems();
+const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+addToCartButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    // Extract product information from the clicked element
+    const productElement = button.parentElement.parentElement;
+    const productName = productElement.dataset.name;
+    const productPrice = parseFloat(productElement.dataset.price);
+
+    // Create a JSON object representing the product
+    const product = {
+      name: productName,
+      price: productPrice,
+    };
+
+    // Retrieve existing cart items from localStorage or initialize an empty array
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Add the product to the cart items
+    cartItems.push(product);
+
+    // Store the updated cart items back in localStorage
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+
+    // Alert the user that the product was added to the cart (you can customize this)
+    alert(`Added ${productName} to the cart!`);
+  });
+});
