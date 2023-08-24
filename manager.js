@@ -1,4 +1,3 @@
-// Declare the chart dimensions and margins.
 const width = 640;
 const height = 400;
 const marginTop = 20;
@@ -19,19 +18,39 @@ const y = d3
   .range([height - marginBottom, marginTop]);
 
 // Create the SVG container.
-const svg = d3.create("svg").attr("width", width).attr("height", height);
+const purchasesSvg = d3
+  .create("svg")
+  .attr("width", width)
+  .attr("height", height);
 
 // Add the x-axis.
-svg
+purchasesSvg
   .append("g")
   .attr("transform", `translate(0,${height - marginBottom})`)
   .call(d3.axisBottom(x));
 
 // Add the y-axis.
-svg
+purchasesSvg
   .append("g")
   .attr("transform", `translate(${marginLeft},0)`)
   .call(d3.axisLeft(y));
 
 // Append the SVG element.
-manager.append(svg.node());
+purchasesChart.append(purchasesSvg.node());
+
+const svgLogins = d3.create("svg").attr("width", width).attr("height", height);
+
+// Add the x-axis.
+svgLogins
+  .append("g")
+  .attr("transform", `translate(0,${height - marginBottom})`)
+  .call(d3.axisBottom(x));
+
+// Add the y-axis.
+svgLogins
+  .append("g")
+  .attr("transform", `translate(${marginLeft},0)`)
+  .call(d3.axisLeft(y));
+
+// Append the svgPurchases element.
+loginChart.append(svgLogins.node());

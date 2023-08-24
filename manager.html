@@ -20,7 +20,7 @@
       />
     </head>
     <body>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark row">
         <div class="container-fluid">
           <button
             class="navbar-toggler"
@@ -57,7 +57,20 @@
         </div>
       </nav>
       <div id="content">
-        <div id="manager" class="content-section"></div>
+        <div id="charts" class="d-flex">
+          <svg
+            width="500"
+            height="500"
+            id="purchasesChart"
+            class="p-2 flex-fill"
+          ></svg>
+          <svg
+            width="500"
+            height="500"
+            id="loginChart"
+            class="p-2 flex-fill"
+          ></svg>
+        </div>
       </div>
       <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
