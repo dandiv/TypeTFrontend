@@ -3,7 +3,7 @@ const firstEnterDiv = document.getElementById("firstEnter");
 const loginButton = document.getElementById("loginBtn");
 const logoutButton = document.getElementById("logoutBtn");
 
-// Handle login and navigation
+// Login section
 
 // Check if the user is already logged in on page load
 const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -79,10 +79,12 @@ logoutButton.addEventListener("click", () => {
   localStorage.setItem("isLoggedIn", "false");
 });
 
+//-------------------------------------------------------------------
 // Catalog Section
 
 let cards = [];
 
+// get items from server
 $(document).ready(function () {
   $.get("http://localhost:3000/item", function (data) {
     // Handle the successful response here
@@ -106,8 +108,8 @@ $(document).ready(function () {
 });
 
 const container = document.getElementById("cardsInfo");
-const gridRow = document.getElementById("cardsInfo");
 
+// create catalog
 function createGridItems() {
   var currentRow = document.createElement("div");
   currentRow.classList.add("row", "m-4");
@@ -156,7 +158,6 @@ function addItemToCart(itemId) {
       alert(`This Item was added to the cart!`);
     },
     error: function (xhr, status, error) {
-      // Handle any errors here
       console.error("Error:", error);
     },
   });
