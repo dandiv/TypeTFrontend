@@ -20,12 +20,13 @@ if (isLoggedIn === "true") {
 
 // Add click event listener to the login button
 loginButton.addEventListener("click", () => {
-  // const username = document.getElementById("username").value;
+  const username = document.getElementById("username").value;
   // const password = document.getElementById("password").value;
   if (true) {
     //if (isValidLogin(username, password)) {
     // Hide login form, show content
     localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("username", username);
     firstEnterDiv.style.display = "none";
     contentDiv.style.display = "block";
   } else {
@@ -48,45 +49,29 @@ function isValidLogin(username, password) {
   return true;
 }
 
-// Create cards dynamically
-const cards = [
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-  {
-    title: "Funky T-shirt",
-    description: "very very cool",
-    price: 87,
-    img: "./assets/tshirt.jpeg",
-  },
-];
+let cards = [];
+
+$(document).ready(function () {
+  $.get("http://localhost:3000/item", function (data) {
+    // Handle the successful response here
+    cards = data;
+    createGridItems();
+
+    const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+    addToCartButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        // Extract product information from the clicked element
+        const itemElement = button.parentElement.parentElement;
+        const itemId = itemElement.id;
+        addItemToCart(itemId);
+      });
+    });
+  }).fail(function (xhr, status, error) {
+    // Handle any errors here
+    console.error(error);
+  });
+});
 
 const container = document.getElementById("cardsInfo");
 const gridRow = document.getElementById("cardsInfo");
@@ -103,7 +88,7 @@ function createGridItems() {
     // Construct card content
     colDiv.innerHTML = `
       <div class="col p-3">
-        <div class="card">
+        <div id=${result._id} class="card">
           <img src=${result.img} class="card-img-top" alt="itemInage">
           <div class="card-body">
             <h5 class="card-title">${result.title}</h5>
@@ -114,6 +99,7 @@ function createGridItems() {
           </ul>
           <div class="card-body">
             <button type="button" class="btn btn-secondary">Buy Now</button>
+            <button type="button" class="btn btn-secondary add-to-cart">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -122,4 +108,28 @@ function createGridItems() {
     currentRow.appendChild(colDiv);
   });
 }
-createGridItems();
+
+function addItemToCart(itemId) {
+  const bodyData = {
+    username: localStorage.username,
+    itemId: itemId,
+  };
+  $.ajax({
+    url: "http://localhost:3000/user/cart",
+    method: "POST",
+    dataType: "json",
+    data: bodyData,
+    success: function (data) {
+      // Alert the user that the product was added to the cart
+      alert(`This Item was added to the cart!`);
+    },
+    error: function (xhr, status, error) {
+      // Handle any errors here
+      console.error("Error:", error);
+    },
+  });
+}
+
+function navigateToSection(url) {
+  window.location.href = url;
+}
