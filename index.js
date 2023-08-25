@@ -1,4 +1,4 @@
-const contentDiv = document.getElementById("content");
+const contentDiv = document.getElementById("catalog");
 const firstEnterDiv = document.getElementById("firstEnter");
 const loginButton = document.getElementById("loginBtn");
 const logoutButton = document.getElementById("logoutBtn");
@@ -10,28 +10,65 @@ const isLoggedIn = localStorage.getItem("isLoggedIn");
 
 if (isLoggedIn === "true") {
   // User is logged in, show content, hide login form
-  contentDiv.style.display = "block";
-  firstEnterDiv.style.display = "none";
-} else {
-  // User is not logged in, show login form, hide content
-  contentDiv.style.display = "none";
-  firstEnterDiv.style.display = "block";
+  contentDiv.classList.remove("hidden");
+  firstEnterDiv.classList.add("hidden");
+}
+
+// login for existing users
+function loginUser(username, password) {
+  const bodyData = {
+    username: username,
+    password: password,
+  };
+  $.ajax({
+    url: "http://localhost:3000/user/login",
+    method: "POST",
+    dataType: "json",
+    data: bodyData,
+    success: function (data) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", username);
+      contentDiv.classList.remove("hidden");
+      firstEnterDiv.classList.add("hidden");
+      location.reload();
+    },
+    error: function (xhr, status, error) {
+      if (error == "Unauthorized") {
+        window.alert(xhr.responseJSON.error);
+      } else {
+        console.error("Error:", error);
+      }
+    },
+  });
+}
+
+//TODO: create sign up
+function createUser(username, password) {
+  const bodyData = {
+    username: username,
+    password: password,
+  };
+  $.ajax({
+    url: "http://localhost:3000/user",
+    method: "POST",
+    dataType: "json",
+    data: bodyData,
+    success: function (data) {
+      alert("User was created successfully");
+      return data;
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+    },
+  });
 }
 
 // Add click event listener to the login button
-loginButton.addEventListener("click", () => {
+loginButton.addEventListener("click", (e) => {
+  e.preventDefault();
   const username = document.getElementById("username").value;
-  // const password = document.getElementById("password").value;
-  if (true) {
-    //if (isValidLogin(username, password)) {
-    // Hide login form, show content
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("username", username);
-    firstEnterDiv.style.display = "none";
-    contentDiv.style.display = "block";
-  } else {
-    alert("Invalid login credentials");
-  }
+  const password = document.getElementById("password").value;
+  loginUser(username, password);
 });
 
 // Add click event listener to the logout button
@@ -42,12 +79,7 @@ logoutButton.addEventListener("click", () => {
   localStorage.setItem("isLoggedIn", "false");
 });
 
-// Placeholder function for login validation
-function isValidLogin(username, password) {
-  // Implement your own logic to validate the login
-  // For demonstration purposes, return true
-  return true;
-}
+// Catalog Section
 
 let cards = [];
 
