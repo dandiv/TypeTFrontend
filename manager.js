@@ -41,27 +41,37 @@ purchasesChart.append(purchasesSvg.node());
 
 const svgLogins = d3.create("svg").attr("width", width).attr("height", height);
 
-// Login Charts
+// Earnings per day
 
 // Add the x-axis.
-svgLogins
+svgEarnings
   .append("g")
   .attr("transform", `translate(0,${height - marginBottom})`)
   .call(d3.axisBottom(x));
 
 // Add the y-axis.
-svgLogins
+svgEarnings
   .append("g")
   .attr("transform", `translate(${marginLeft},0)`)
   .call(d3.axisLeft(y));
 
-loginChart.append(svgLogins.node());
+earningsChart.append(svgEarnings.node());
 
 // Getting Alerts data from server
-var numberOfOrders;
+var numberOfPurchases;
+var numberOfLogins;
 
-$.get("http://localhost:3000/items", function (data) {
-  numberOfOrders = data;
+$.get("http://localhost:3000/purchases/count", function (data) {
+  numberOfPurchases = data;
+  purchases.textContent(numberOfPurchases);
+}).fail(function (xhr, status, error) {
+  // Handle any errors here
+  console.error(error);
+});
+
+$.get("http://localhost:3000/users/count", function (data) {
+  numberOfUsers = data;
+  loggedUsers.textContent(numberOfUsers);
 }).fail(function (xhr, status, error) {
   // Handle any errors here
   console.error(error);
