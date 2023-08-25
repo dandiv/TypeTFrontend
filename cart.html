@@ -34,42 +34,63 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#home.html">TypeT</a>
+            <a class="navbar-brand" href="index.html">TypeT</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="index.html"
+                <a class="nav-link active" aria-current="page" href="index.html"
                   >Home</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="history.html">History</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="cart.html">Cart</a>
-              </li>
             </ul>
             <div class="d-flex">
-              <button
-                type="button"
-                class="btn d-flex flex-row-reverse btn-outline-light"
-              >
-                Logout
-              </button>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <i class="bi bi-heart"></i>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="cart.html"
+                    ><i class="bi bi-cart mx-1"></i> Cart</a
+                  >
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    id="logoutBtn"
+                    class="btn d-flex flex-row-reverse btn-outline-light"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </nav>
       <div id="content">
-        <div id="cart" class="content-section">
-          <div class="container">
-            <section class="cart">
-              <h2>Cart</h2>
-              <ul id="cart-items">
-                <!-- Cart items will be added here -->
-              </ul>
-              <p>Total: $<span id="cart-total">0.00</span></p>
-            </section>
-          </div>
+        <div class="cart-container">
+          <h1>Your Shopping Cart</h1>
+          <div id="cart-items"></div>
+          <div id="cart-total">Total: $0.00</div>
+          <button id="purchase-btn">Purchase</button>
+        </div>
+
+        <div id="purchase-form" class="hidden">
+          <h2>Checkout</h2>
+          <form id="checkout-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required />
+
+            <label for="address">Address:</label>
+            <textarea id="address" required></textarea>
+
+            <button type="submit">Complete Purchase</button>
+          </form>
         </div>
       </div>
       <script src="https://code.jquery.com/jquery-1.10.2.js"></script>

@@ -1,42 +1,68 @@
-// script.js
+document.addEventListener("DOMContentLoaded", function () {
+  const cartItems = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+  const purchaseBtn = document.getElementById("purchase-btn");
+  const purchaseForm = document.getElementById("purchase-form");
 
-// Function to add an item to the cart
-function addToCart(productName, productPrice) {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const item = { name: productName, price: productPrice };
-  cart.push(item);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  displayCart();
-}
+  // Sample data of items in the cart (replace with actual data from your server)
+  const itemsInCart = [
+    {
+      id: 1,
+      title: "Item 1",
+      price: 10.0,
+      quantity: 2,
+      image: "item1.jpg",
+    },
+    {
+      id: 2,
+      title: "Item 2",
+      price: 15.0,
+      quantity: 1,
+      image: "item2.jpg",
+    },
+  ];
 
-// Function to remove an item from the cart
-function removeFromCart(index) {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.splice(index, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  displayCart();
-}
+  // Function to display items in the cart
+  function displayCartItems() {
+    cartItems.innerHTML = "";
+    let totalPrice = 0;
 
-// Function to display cart items and total
-function displayCart() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const cartItemsElement = document.getElementById("cart-items");
-  const cartTotalElement = document.getElementById("cart-total");
-  let total = 0;
+    itemsInCart.forEach((item) => {
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("cart-item");
 
-  cartItemsElement.innerHTML = "";
+      itemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <h3>${item.title}</h3>
+                <p>Price: $${item.price.toFixed(2)}</p>
+                <p>Quantity: ${item.quantity}</p>
+                <p>Total: $${(item.price * item.quantity).toFixed(2)}</p>
+            `;
 
-  cart.forEach((item, index) => {
-    const listItem = document.createElement("li");
-    listItem.innerHTML = `${item.name} - $${item.price.toFixed(
-      2
-    )} <button onclick="removeFromCart(${index})">Remove</button>`;
-    cartItemsElement.appendChild(listItem);
-    total += item.price;
+      cartItems.appendChild(itemDiv);
+
+      totalPrice += item.price * item.quantity;
+    });
+
+    cartTotal.textContent = `Total: $${totalPrice.toFixed(2)}`;
+  }
+
+  // Show purchase form when the "Purchase" button is clicked
+  purchaseBtn.addEventListener("click", function () {
+    purchaseForm.classList.remove("hidden");
   });
 
-  cartTotalElement.textContent = total.toFixed(2);
-}
+  // Handle form submission (you can add validation and submission logic here)
+  const checkoutForm = document.getElementById("checkout-form");
+  checkoutForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-// Initialize the page
-displayCart();
+    // Replace this with your purchase logic (e.g., sending data to a server)
+    alert("Purchase Successful!");
+    checkoutForm.reset();
+    purchaseForm.classList.add("hidden");
+  });
+
+  // Initial display of cart items
+  displayCartItems();
+});
