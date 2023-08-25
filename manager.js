@@ -39,7 +39,10 @@ purchasesSvg
 
 purchasesChart.append(purchasesSvg.node());
 
-const svgLogins = d3.create("svg").attr("width", width).attr("height", height);
+const svgEarnings = d3
+  .create("svg")
+  .attr("width", width)
+  .attr("height", height);
 
 // Earnings per day
 
