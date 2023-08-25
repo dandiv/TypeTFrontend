@@ -21,6 +21,7 @@ const image =
 initMap();
 marks.forEach((mark) => {
   newMark = new google.maps.Marker({
+    title: mark.address,
     position: { lat: mark.lat, lng: mark.lng },
     map,
     icon: image,
