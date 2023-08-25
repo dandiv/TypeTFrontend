@@ -5,6 +5,8 @@ const marginRight = 20;
 const marginBottom = 30;
 const marginLeft = 40;
 
+// Creating purchases chart
+
 // Declare the x (horizontal position) scale.
 const x = d3
   .scaleUtc()
@@ -35,10 +37,11 @@ purchasesSvg
   .attr("transform", `translate(${marginLeft},0)`)
   .call(d3.axisLeft(y));
 
-// Append the SVG element.
 purchasesChart.append(purchasesSvg.node());
 
 const svgLogins = d3.create("svg").attr("width", width).attr("height", height);
+
+// Login Charts
 
 // Add the x-axis.
 svgLogins
@@ -52,5 +55,14 @@ svgLogins
   .attr("transform", `translate(${marginLeft},0)`)
   .call(d3.axisLeft(y));
 
-// Append the svgPurchases element.
 loginChart.append(svgLogins.node());
+
+// Getting Alerts data from server
+var numberOfOrders;
+
+$.get("http://localhost:3000/items", function (data) {
+  numberOfOrders = data;
+}).fail(function (xhr, status, error) {
+  // Handle any errors here
+  console.error(error);
+});
