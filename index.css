@@ -17,3 +17,7 @@
   background-color: #ddd;
   color: black;
 }
+
+.card-id {
+  display: none;
+}
