@@ -1,5 +1,12 @@
+const logoutButton = document.getElementById("logoutBtn");
+
+logoutButton.addEventListener("click", () => {
+  // Show login form, hide content
+  localStorage.setItem("isLoggedIn", "false");
+  window.location.href = "index.html";
+});
+
 // Mark image
-let map;
 // initMap is now async
 async function initMap() {
   // Request libraries when needed, not in the script tag.
