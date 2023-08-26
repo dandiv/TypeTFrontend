@@ -61,7 +61,12 @@
 
 .purchase-item p {
   margin: 5px 0;
-  font-size: 14px;
+}
+
+.purchase-user {
+  text-shadow: #333;
+  size: 5em;
+  background-color: antiquewhite;
 }
 
 .purchase-item .purchase-time {
