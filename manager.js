@@ -1,23 +1,50 @@
-// Fetch purchases
-fetch("http://localhost:3000/purchase/purchaseCountPerDate")
-  .then((response) => response.json())
-  .then((purchasesData) => {
-    createBarChart(purchasesData, "purchasesChart", "count");
-  })
-  .catch((error) => {
-    console.error("Error fetching data:", error);
+const socket = io(); // Connect to the socket server
+const BASE_URL = "http://localhost:3000";
+
+socket.on("stockChange", (data) => {
+  initGraphs();
+});
+
+function initGraphs() {
+  // Fetch purchases
+  fetch("${BASE_URL}/purchase/purchaseCountPerDate")
+    .then((response) => response.json())
+    .then((purchasesData) => {
+      createBarChart(purchasesData, "purchasesChart", "count");
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+
+  // Fetch eanings
+  fetch("${BASE_URL}/purchase/earningsPerDate")
+    .then((response) => response.json())
+    .then((earningsData) => {
+      console.log(earningsData);
+      createBarChart(earningsData, "earningsChart", "totalEarnings");
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+
+  // Getting Alerts data from server
+  var numberOfPurchases = document.getElementById("loggedUsers");
+  var numberOfLogins = document.getElementById("purchases");
+
+  $.get("${BASE_URL}/purchase/count", function (data) {
+    numberOfPurchases.innerHTML = data;
+  }).fail(function (xhr, status, error) {
+    // Handle any errors here
+    console.error(error);
   });
 
-// Fetch eanings
-fetch("http://localhost:3000/purchase/earningsPerDate")
-  .then((response) => response.json())
-  .then((earningsData) => {
-    console.log(earningsData);
-    createBarChart(earningsData, "earningsChart", "totalEarnings");
-  })
-  .catch((error) => {
-    console.error("Error fetching data:", error);
+  $.get("${BASE_URL}/user/count", function (data) {
+    numberOfLogins.innerHTML = data;
+  }).fail(function (xhr, status, error) {
+    // Handle any errors here
+    console.error(error);
   });
+}
 
 // Function to create the bar chart
 function createBarChart(data, containerId, dataType) {
@@ -94,20 +121,4 @@ function createBarChart(data, containerId, dataType) {
     .style("text-anchor", "end");
 }
 
-// Getting Alerts data from server
-var numberOfPurchases = document.getElementById("loggedUsers");
-var numberOfLogins = document.getElementById("purchases");
-
-$.get("http://localhost:3000/purchase/count", function (data) {
-  numberOfPurchases.innerHTML = data;
-}).fail(function (xhr, status, error) {
-  // Handle any errors here
-  console.error(error);
-});
-
-$.get("http://localhost:3000/user/count", function (data) {
-  numberOfLogins.innerHTML = data;
-}).fail(function (xhr, status, error) {
-  // Handle any errors here
-  console.error(error);
-});
+initGraphs();
