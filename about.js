@@ -1,3 +1,11 @@
+const logoutButton = document.getElementById("logoutBtn");
+
+logoutButton.addEventListener("click", () => {
+  // Show login form, hide content
+  localStorage.setItem("isLoggedIn", "false");
+  window.location.href = "index.html";
+});
+
 let map;
 // Mark image
 const image = "assets/TypeTLogoBlack.png";
