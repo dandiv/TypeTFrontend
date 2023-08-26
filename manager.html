@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TypeT</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="manager.css" />
+    <link href="path/to/bootstrap.min.css" rel="stylesheet" />
   </head>
   <!DOCTYPE html>
   <html lang="en">
@@ -56,23 +57,21 @@
           </div>
         </div>
       </nav>
-      <div id="content" class="d-flex flex-column mb-2">
+      <div id="content" class="d-flex flex-column mb-3">
         <div
-          id="alerts"
-          class="d-flex flex-row mb-2 m-1 justify-content-center"
+          class="d-flex flex-row mb-3 m-1 align-items-center justify-content-center"
         >
-          <div>
-            <div class="alert alert-dark p-2 flex-fill m-1" role="alert">
-              Logged user: <span id="loggedUsers"></span>
-            </div>
+          <div class="alert alert-light p-2 m-1 align-text-center" role="alert">
+            Logged user: <span id="loggedUsers"></span>
           </div>
-          <div>
-            <div class="alert alert-dark p-2 flex-fill m-1" role="alert">
-              Purchases so far: <span id="purchases"></span>
-            </div>
+          <div id="clock-content" class="p-2 m-1">
+            <canvas id="clock"></canvas>
+          </div>
+          <div class="alert alert-light p-2 m-1 align-text-center" role="alert">
+            Purchases so far: <span id="purchases"></span>
           </div>
         </div>
-        <div id="charts" class="d-flex flex-row mb-2 m-1">
+        <div id="charts" class="d-flex mb-2 m-1">
           <svg
             width="500"
             height="500"
