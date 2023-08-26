@@ -6,9 +6,7 @@ logoutButton.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-let map;
 // Mark image
-let map;
 // initMap is now async
 async function initMap() {
   // Request libraries when needed, not in the script tag.
