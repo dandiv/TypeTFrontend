@@ -83,13 +83,18 @@ logoutButton.addEventListener("click", () => {
 // Catalog Section
 
 let cards = [];
+const container = document.getElementById("cardsInfo");
 
 // get items from server
 $(document).ready(function () {
   $.get("http://localhost:3000/item", function (data) {
     // Handle the successful response here
     cards = data;
-    createGridItems();
+    if (!cards) {
+      container.innerText("No results!");
+    } else {
+      createGridItems(cards);
+    }
 
     const addToCartButtons = document.querySelectorAll(".add-to-cart");
 
@@ -106,8 +111,6 @@ $(document).ready(function () {
     console.error(error);
   });
 });
-
-const container = document.getElementById("cardsInfo");
 
 // create catalog
 function createGridItems(cardsData) {
@@ -191,7 +194,12 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((response) => response.json())
       .then((data) => {
-        createGridItems(data);
+        cards = data;
+        if (!cards) {
+          container.innerText("No results!");
+        } else {
+          createGridItems(data);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
