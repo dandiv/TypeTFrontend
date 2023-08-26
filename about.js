@@ -1,5 +1,6 @@
-let map;
+import { API_KEY, ENVIRONMENT } from "./config.js";
 // Mark image
+let map;
 const image = "assets/TypeTLogoBlack.png";
 
 // initMap is now async

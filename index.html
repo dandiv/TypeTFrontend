@@ -122,6 +122,56 @@
             </div>
           </div>
         </nav>
+        <div class="row p-5">
+          <div class="col-md-12">
+            <h4>Filters</h4>
+            <form id="filterForm">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="colorFilter" class="form-label">Color</label>
+                  <select class="form-select" id="colorFilter">
+                    <option value="">All</option>
+                    <option value="Red">Red</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Green">Blue</option>
+                    <option value="Black">Blue</option>
+                    <option value="Pink">Blue</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="sizeFilter" class="form-label">Size</label>
+                  <select class="form-select" id="sizeFilter">
+                    <option value="">All</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Medium">Large</option>
+                    <option value="Medium">X-Large</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="minPrice" class="form-label">Min Price</label>
+                  <input type="number" class="form-control" id="minPrice" />
+                </div>
+                <div class="col-md-3">
+                  <label for="maxPrice" class="form-label">Max Price</label>
+                  <input type="number" class="form-control" id="maxPrice" />
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="applyFilters"
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <div id="cardsInfo" class="m-3"></div>
       </div>
 
