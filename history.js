@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Replace this with your API endpoint to fetch purchase history
   const username = localStorage.username;
+  const logoutButton = document.getElementById("logoutBtn");
+
+  logoutButton.addEventListener("click", () => {
+    // Show login form, hide content
+    localStorage.setItem("isLoggedIn", "false");
+    window.location.href = "index.html";
+  });
 
   fetch("http://localhost:3000/purchase/buyerId/" + username)
     .then((response) => response.json())

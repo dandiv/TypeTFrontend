@@ -1,5 +1,12 @@
 //const socket = io(); // Connect to the socket server
 const BASE_URL = "http://localhost:3000";
+const logoutButton = document.getElementById("logoutBtn");
+
+logoutButton.addEventListener("click", () => {
+  // Show login form, hide content
+  localStorage.setItem("isLoggedIn", "false");
+  window.location.href = "index.html";
+});
 
 // socket.on("stockChange", (data) => {
 //   initGraphs();

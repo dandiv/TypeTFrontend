@@ -3,9 +3,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartTotal = document.getElementById("cart-total");
   const purchaseBtn = document.getElementById("purchase-btn");
   const purchaseModal = document.getElementById("purchase-modal");
+  const managerPage = document.getElementById("manager-page");
+  const logoutButton = document.getElementById("logoutBtn");
+
+  logoutButton.addEventListener("click", () => {
+    // Show login form, hide content
+    localStorage.setItem("isLoggedIn", "false");
+    window.location.href = "index.html";
+  });
+
   const username = localStorage.username;
   let userCartItems = [];
 
+  if (localStorage.isManager) {
+    managerPage.classList.remove("hidden");
+  }
   // get user's items from server
   fetch("http://localhost:3000/user/cart/" + username, {
     method: "GET",

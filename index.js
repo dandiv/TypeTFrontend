@@ -2,6 +2,7 @@ const contentDiv = document.getElementById("catalog");
 const firstEnterDiv = document.getElementById("firstEnter");
 const loginButton = document.getElementById("loginBtn");
 const logoutButton = document.getElementById("logoutBtn");
+const managerPage = document.getElementById("manager-page");
 
 // Login section
 
@@ -12,6 +13,9 @@ if (isLoggedIn === "true") {
   // User is logged in, show content, hide login form
   contentDiv.classList.remove("hidden");
   firstEnterDiv.classList.add("hidden");
+  if (localStorage.isManager == "true") {
+    managerPage.classList.remove("hidden");
+  }
 }
 
 // login for existing users
@@ -28,6 +32,7 @@ function loginUser(username, password) {
     success: function (data) {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("username", username);
+      localStorage.setItem("isManager", data.isManager);
       contentDiv.classList.remove("hidden");
       firstEnterDiv.classList.add("hidden");
       location.reload();
@@ -69,6 +74,9 @@ loginButton.addEventListener("click", (e) => {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   loginUser(username, password);
+  if (localStorage.isManager == "true") {
+    managerPage.classList.remove("hidden");
+  }
 });
 
 // Add click event listener to the logout button
