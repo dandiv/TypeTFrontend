@@ -9,7 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
   });
 
-  fetch("http://localhost:3000/purchase/buyerId/" + username)
+  let purchaseRequest = "http://localhost:3000/purchase/buyerId/" + username;
+
+  if (localStorage.isManager == "true") {
+    purchaseRequest = "http://localhost:3000/purchase/";
+  }
+
+  fetch(purchaseRequest)
     .then((response) => response.json())
     .then((data) => {
       const purchaseList = document.getElementById("purchase-list");
@@ -43,17 +49,34 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>Color: ${item.color}</p>`);
           });
 
-          purchaseItem.innerHTML = `
-          <p class="purchase-time">Purchase Time: ${new Date(
-            purchase.purchaseDate
-          ).toLocaleString()}</p>
-          <div class="item-details">
-            ${itemsImages.join("")}
-            ${itemsDescriptions.join("")}
-          </div>
-          <p class="purchase-address">Address: ${purchase.address}</p>
-          <p class="purchase-total">Total: $${purchase.total.toFixed(2)}</p>
-        `;
+          if (localStorage.isManager == "true") {
+            purchaseItem.innerHTML = `
+            <p class="purchase-user">User: ${purchase.buyer} </p>
+            <p class="purchase-time">Purchase Time: ${new Date(
+              purchase.purchaseDate
+            ).toLocaleString()}</p>
+            <div class="item-details">
+              ${itemsImages.join("")}
+              ${itemsDescriptions.join("")}
+            </div>
+            <p class="purchase-address">Address: ${purchase.address}</p>
+            <p class="purchase-total">Total: $${purchase.total.toFixed(2)}</p>
+          `;
+          } else {
+            purchaseItem.innerHTML = `
+                <p class="purchase-time">Purchase Time: ${new Date(
+                  purchase.purchaseDate
+                ).toLocaleString()}</p>
+                <div class="item-details">
+                ${itemsImages.join("")}
+                ${itemsDescriptions.join("")}
+                </div>
+                <p class="purchase-address">Address: ${purchase.address}</p>
+                <p class="purchase-total">Total: $${purchase.total.toFixed(
+                  2
+                )}</p>
+            `;
+          }
 
           purchaseList.appendChild(purchaseItem);
         });
