@@ -8,8 +8,7 @@ logoutButton.addEventListener("click", () => {
 
 let map;
 // Mark image
-const image = "assets/TypeTLogoBlack.png";
-
+let map;
 // initMap is now async
 async function initMap() {
   // Request libraries when needed, not in the script tag.

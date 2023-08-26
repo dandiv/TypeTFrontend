@@ -91,13 +91,18 @@ logoutButton.addEventListener("click", () => {
 // Catalog Section
 
 let cards = [];
+const container = document.getElementById("cardsInfo");
 
 // get items from server
 $(document).ready(function () {
   $.get("http://localhost:3000/item", function (data) {
     // Handle the successful response here
     cards = data;
-    createGridItems();
+    if (!cards) {
+      container.innerText("No results!");
+    } else {
+      createGridItems(cards);
+    }
 
     const addToCartButtons = document.querySelectorAll(".add-to-cart");
 
@@ -115,15 +120,13 @@ $(document).ready(function () {
   });
 });
 
-const container = document.getElementById("cardsInfo");
-
 // create catalog
-function createGridItems() {
+function createGridItems(cardsData) {
   var currentRow = document.createElement("div");
   currentRow.classList.add("row", "m-4");
   container.appendChild(currentRow);
 
-  cards.forEach((result, idx) => {
+  cardsData.forEach((result, idx) => {
     var colDiv = document.createElement("div");
     colDiv.classList.add("col-md-3", "d-flex", "align-items-stretch");
 
@@ -159,6 +162,7 @@ function createGridItems() {
   container.appendChild(currentRow);
 }
 
+// Add item to cart
 function addItemToCart(itemId) {
   const bodyData = {
     username: localStorage.username,
@@ -182,3 +186,31 @@ function addItemToCart(itemId) {
 function navigateToSection(url) {
   window.location.href = url;
 }
+
+// Filter items
+document.addEventListener("DOMContentLoaded", function () {
+  const applyFiltersBtn = document.getElementById("applyFilters");
+
+  applyFiltersBtn.addEventListener("click", function () {
+    const colorFilter = document.getElementById("colorFilter").value;
+    const sizeFilter = document.getElementById("sizeFilter").value;
+    const minPrice = parseFloat(document.getElementById("minPrice").value);
+    const maxPrice = parseFloat(document.getElementById("maxPrice").value);
+
+    fetch(
+      `http://localhost:3000/item/price/${minPrice}/${maxPrice}?color=${colorFilter}&size=${sizeFilter}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        cards = data;
+        if (!cards) {
+          container.innerText("No results!");
+        } else {
+          createGridItems(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+});
