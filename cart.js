@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((itemsIds) => {
+      localStorage.setItem("itemsIds", JSON.stringify(itemsIds));
       const fetchPromises = [];
 
       // Iterate over item IDs and send a fetch request for each
@@ -47,6 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 price: data.price,
                 quantity: 1,
                 image: data.img,
+                size: data.size,
+                color: data.color,
               };
               userCartItems.push(cartItem);
             }
@@ -58,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return Promise.all(fetchPromises);
     })
     .then(() => {
+      localStorage.setItem("cart", JSON.stringify(userCartItems));
       displayCartItems();
     })
     .catch((error) => {
@@ -82,6 +86,12 @@ document.addEventListener("DOMContentLoaded", function () {
   )}</p>
   <p class="item-detail"><span class="detail-label">Quantity:</span> ${
     item.quantity
+  }</p>
+  <p class="item-detail"><span class="detail-label">Size:</span> ${
+    item.size
+  }</p>
+  <p class="item-detail"><span class="detail-label">Color:</span> ${
+    item.color
   }</p>
   <p class="item-detail"><span class="detail-label">Total:</span> $${(
     item.price * item.quantity
@@ -111,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
     purchaseModal.style.display = "none";
   };
 
+  // Credit Card validations
   const cardNumberInput = document.getElementById("card-number");
   const expiryInput = document.getElementById("expiry");
   const cvvInput = document.getElementById("cvv");
@@ -150,11 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  // Event listener for form submission
-  document
-    .querySelector("form")
-    .addEventListener("submit", function (event) {});
-
   // Handle form submission (you can add validation and submission logic here)
   const checkoutForm = document.getElementById("checkout-form");
 
@@ -162,10 +168,49 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!validateCardNumber() || !validateExpiry() || !validateCVV()) {
       e.preventDefault(); // Prevent form submission if validation fails
     } else {
-      // Replace this with your purchase logic (e.g., sending data to a server)
-      alert("Purchase Successful!");
-      checkoutForm.reset();
-      purchaseForm.classList.add("hidden");
+      const addressTextArea = document.getElementById("user-address");
+      const userAddress = addressTextArea.value;
+      const cartTotalText = cartTotal.textContent;
+      const purchaseBody = {
+        address: userAddress,
+        buyer: localStorage.username,
+        items: JSON.parse(localStorage.itemsIds),
+        total: parseInt(cartTotalText.replace(/[^0-9]/g, ""), 10) / 100,
+      };
+      fetch("http://localhost:3000/purchase/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(purchaseBody),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((purchase) => {
+          const userPurchase = {
+            username: localStorage.username,
+            purchaseId: purchase._id,
+          };
+          fetch("http://localhost:3000/user/purchase", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userPurchase),
+          });
+        })
+        .then(() => {
+          window.alert(
+            "Thank you! Your delivery will arrive as soon as possible"
+          );
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     }
   });
 });
