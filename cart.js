@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartItems = document.getElementById("cart-items");
   const cartTotal = document.getElementById("cart-total");
   const purchaseBtn = document.getElementById("purchase-btn");
-  const purchaseForm = document.getElementById("purchase-form");
+  const purchaseModal = document.getElementById("purchase-modal");
   const username = localStorage.username;
   let userCartItems = [];
 
@@ -89,10 +89,19 @@ document.addEventListener("DOMContentLoaded", function () {
     cartTotal.textContent = `Total: $${totalPrice.toFixed(2)}`;
   }
 
-  // Show purchase form when the "Purchase" button is clicked
+  // Show purchase modal when the "Purchase" button is clicked
   purchaseBtn.addEventListener("click", function () {
-    purchaseForm.classList.remove("hidden");
+    purchaseModal.style.display = "flex";
+    purchaseModal.classList.remove("hidden");
   });
+
+  // Get the <span> element that closes the modal
+  const closeButton = document.getElementsByClassName("close-button")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  closeButton.onclick = function () {
+    purchaseModal.style.display = "none";
+  };
 
   // Handle form submission (you can add validation and submission logic here)
   const checkoutForm = document.getElementById("checkout-form");

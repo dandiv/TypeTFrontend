@@ -77,20 +77,33 @@
           <button id="purchase-btn">Purchase</button>
         </div>
 
-        <div id="purchase-form" class="hidden">
-          <h2>Checkout</h2>
-          <form id="checkout-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" required />
+        <div id="purchase-modal" class="modal hidden">
+          <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Checkout</h2>
+            <form id="checkout-form">
+              <div id="name-section" class="fields-row">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required />
+                <label for="email">Email:</label>
+                <input type="email" id="email" required />
+              </div>
+              <div id="address-section" class="fields-row">
+                <label for="address">Address:</label>
+                <textarea id="address" required></textarea>
+              </div>
+              <div class="credit-card-row">
+                <label for="card-number">Credit Card Number:</label>
+                <input type="text" id="card-number" required />
+                <label for="expiry">Expiry Date:</label>
+                <input type="text" id="expiry" required placeholder="MM/YYYY" />
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" required />
-
-            <label for="address">Address:</label>
-            <textarea id="address" required></textarea>
-
-            <button type="submit">Complete Purchase</button>
-          </form>
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" required />
+              </div>
+              <button type="submit">Complete Purchase</button>
+            </form>
+          </div>
         </div>
       </div>
       <script src="https://code.jquery.com/jquery-1.10.2.js"></script>

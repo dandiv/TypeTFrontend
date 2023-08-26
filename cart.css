@@ -79,6 +79,10 @@ button:hover {
   background-color: #0056b3;
 }
 
+.hidden {
+  display: none;
+}
+
 #purchase-form {
   max-width: 400px;
   margin: 20px auto;
@@ -88,7 +92,6 @@ button:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   text-align: left;
-  display: none;
 }
 
 #checkout-form label {
@@ -122,3 +125,99 @@ button:hover {
 #checkout-form button:hover {
   background-color: #0056b3;
 }
+
+/* Styles for the modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.modal-content {
+  background-color: transparent; /* Remove white background */
+  padding: 20px;
+  border-radius: 5px;
+  width: 70% !important; /* Adjust the width as desired (70% of the page) */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  text-align: center; /* Center text horizontally */
+}
+
+/* Close button for the modal */
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* Styles for form elements (you can customize these) */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center; /* Align form elements to the left */
+}
+
+.fields-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 70%; /* Ensure the row spans the full width of the modal */
+}
+/* Credit card details on the same row */
+.credit-card-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%; /* Ensure the row spans the full width of the modal */
+}
+
+.credit-card-row label {
+  flex: 1; /* Make labels take equal space */
+  text-align: right;
+  padding-right: 10px;
+}
+
+.credit-card-row input {
+  flex: 2; /* Make input fields take more space */
+  max-width: 50%; /* Limit the width of input fields */
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Additional styles for credit card fields (customize as needed) */
+/* #card-number,
+#expiry,
+#cvv {
+  /* Add styles for credit card fields */
