@@ -1,0 +1,12 @@
+#clock {
+  color: black;
+  display: revert;
+  margin: 0 auto;
+  background: rgb(33 37 41);
+  border-radius: 20px;
+}
+
+.alert {
+  width: 200px;
+  text-align: center;
+}

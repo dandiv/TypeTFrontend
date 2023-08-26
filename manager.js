@@ -1,13 +1,13 @@
-const socket = io(); // Connect to the socket server
+//const socket = io(); // Connect to the socket server
 const BASE_URL = "http://localhost:3000";
 
-socket.on("stockChange", (data) => {
-  initGraphs();
-});
+// socket.on("stockChange", (data) => {
+//   initGraphs();
+// });
 
 function initGraphs() {
   // Fetch purchases
-  fetch("${BASE_URL}/purchase/purchaseCountPerDate")
+  fetch(`${BASE_URL}/purchase/purchaseCountPerDate`)
     .then((response) => response.json())
     .then((purchasesData) => {
       createBarChart(purchasesData, "purchasesChart", "count");
@@ -17,10 +17,9 @@ function initGraphs() {
     });
 
   // Fetch eanings
-  fetch("${BASE_URL}/purchase/earningsPerDate")
+  fetch(`${BASE_URL}/purchase/earningsPerDate`)
     .then((response) => response.json())
     .then((earningsData) => {
-      console.log(earningsData);
       createBarChart(earningsData, "earningsChart", "totalEarnings");
     })
     .catch((error) => {
@@ -31,14 +30,14 @@ function initGraphs() {
   var numberOfPurchases = document.getElementById("loggedUsers");
   var numberOfLogins = document.getElementById("purchases");
 
-  $.get("${BASE_URL}/purchase/count", function (data) {
+  $.get(`${BASE_URL}/purchase/count`, function (data) {
     numberOfPurchases.innerHTML = data;
   }).fail(function (xhr, status, error) {
     // Handle any errors here
     console.error(error);
   });
 
-  $.get("${BASE_URL}/user/count", function (data) {
+  $.get(`${BASE_URL}/user/count`, function (data) {
     numberOfLogins.innerHTML = data;
   }).fail(function (xhr, status, error) {
     // Handle any errors here
@@ -122,3 +121,33 @@ function createBarChart(data, containerId, dataType) {
 }
 
 initGraphs();
+
+// Create digital canvas clock
+var context;
+var d;
+var str;
+function getClock() {
+  d = new Date();
+  str = Calculate(d.getHours(), d.getMinutes(), d.getSeconds());
+
+  context = clock.getContext("2d");
+  context.clearRect(0, 20, 300, 200);
+  context.font = "50pt poppins";
+  context.fillStyle = "white";
+  context.fillText(str, 20, 100);
+}
+
+function Calculate(hour, min, sec) {
+  var curTime;
+  if (hour < 10) curTime = "0" + hour.toString();
+  else curTime = hour.toString();
+
+  if (min < 10) curTime += ":0" + min.toString();
+  else curTime += ":" + min.toString();
+
+  if (sec < 10) curTime += ":0" + sec.toString();
+  else curTime += ":" + sec.toString();
+  return curTime;
+}
+
+setInterval(getClock, 100);
