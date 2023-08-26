@@ -76,9 +76,17 @@ document.addEventListener("DOMContentLoaded", function () {
       itemDiv.innerHTML = `
                 <img src="${item.image}" alt="${item.title}">
                 <h3>${item.title}</h3>
-                <p>Price: $${item.price.toFixed(2)}</p>
-                <p>Quantity: ${item.quantity}</p>
-                <p>Total: $${(item.price * item.quantity).toFixed(2)}</p>
+                <div class="item-details">
+  <p class="item-detail"><span class="detail-label">Price:</span> $${item.price.toFixed(
+    2
+  )}</p>
+  <p class="item-detail"><span class="detail-label">Quantity:</span> ${
+    item.quantity
+  }</p>
+  <p class="item-detail"><span class="detail-label">Total:</span> $${(
+    item.price * item.quantity
+  ).toFixed(2)}</p>
+</div>
             `;
 
       cartItems.appendChild(itemDiv);
@@ -103,14 +111,61 @@ document.addEventListener("DOMContentLoaded", function () {
     purchaseModal.style.display = "none";
   };
 
+  const cardNumberInput = document.getElementById("card-number");
+  const expiryInput = document.getElementById("expiry");
+  const cvvInput = document.getElementById("cvv");
+
+  // Regular expressions for validation
+  const cardNumberRegex = /^\d{16}$/; // 16 digits
+  const expiryRegex = /^(0[1-9]|1[0-2])\/\d{4}$/; // MM/YYYY format
+  const cvvRegex = /^\d{3}$/; // 3 digits
+
+  // Function to validate the credit card number
+  function validateCardNumber() {
+    if (!cardNumberRegex.test(cardNumberInput.value)) {
+      alert("Please enter a valid 16-digit credit card number.");
+      cardNumberInput.focus();
+      return false;
+    }
+    return true;
+  }
+
+  // Function to validate the expiry date
+  function validateExpiry() {
+    if (!expiryRegex.test(expiryInput.value)) {
+      alert("Please enter a valid expiry date in MM/YYYY format.");
+      expiryInput.focus();
+      return false;
+    }
+    return true;
+  }
+
+  // Function to validate the CVV
+  function validateCVV() {
+    if (!cvvRegex.test(cvvInput.value)) {
+      alert("Please enter a valid 3-digit CVV.");
+      cvvInput.focus();
+      return false;
+    }
+    return true;
+  }
+
+  // Event listener for form submission
+  document
+    .querySelector("form")
+    .addEventListener("submit", function (event) {});
+
   // Handle form submission (you can add validation and submission logic here)
   const checkoutForm = document.getElementById("checkout-form");
-  checkoutForm.addEventListener("submit", function (e) {
-    e.preventDefault();
 
-    // Replace this with your purchase logic (e.g., sending data to a server)
-    alert("Purchase Successful!");
-    checkoutForm.reset();
-    purchaseForm.classList.add("hidden");
+  checkoutForm.addEventListener("submit", function (e) {
+    if (!validateCardNumber() || !validateExpiry() || !validateCVV()) {
+      e.preventDefault(); // Prevent form submission if validation fails
+    } else {
+      // Replace this with your purchase logic (e.g., sending data to a server)
+      alert("Purchase Successful!");
+      checkoutForm.reset();
+      purchaseForm.classList.add("hidden");
+    }
   });
 });

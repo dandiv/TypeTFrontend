@@ -126,6 +126,29 @@ button:hover {
   background-color: #0056b3;
 }
 
+.item-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* Styles for individual item details */
+.item-detail {
+  flex: 1;
+  display: grid;
+  margin: 10px !important;
+}
+
+/* Styles for detail labels */
+.detail-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
 /* Styles for the modal */
 .modal {
   display: none;
@@ -215,9 +238,3 @@ button[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
 }
-
-/* Additional styles for credit card fields (customize as needed) */
-/* #card-number,
-#expiry,
-#cvv {
-  /* Add styles for credit card fields */
