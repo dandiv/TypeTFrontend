@@ -168,6 +168,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!validateCardNumber() || !validateExpiry() || !validateCVV()) {
       e.preventDefault(); // Prevent form submission if validation fails
     } else {
+      itemIds = localStorage.itemsIds;
+      itemIds = JSON.parse(itemIds);
+      const userCart = {
+        username: localStorage.username,
+        itemIds: itemIds,
+      };
       const addressTextArea = document.getElementById("user-address");
       const userAddress = addressTextArea.value;
       const cartTotalText = cartTotal.textContent;
@@ -188,14 +194,14 @@ document.addEventListener("DOMContentLoaded", function () {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          return response.json();
+          return response.json(); // Call .json() once
         })
         .then((purchase) => {
           const userPurchase = {
             username: localStorage.username,
             purchaseId: purchase._id,
           };
-          fetch("http://localhost:3000/user/purchase", {
+          return fetch("http://localhost:3000/user/purchase", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -203,14 +209,24 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(userPurchase),
           });
         })
-        .then(() => {
-          window.alert(
-            "Thank you! Your delivery will arrive as soon as possible"
-          );
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json(); // Call .json() once again if needed
         })
         .catch((error) => {
           console.error("Error:", error);
         });
+
+      fetch("http://localhost:3000/user/cart", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userCart),
+      });
+      window.alert("Thank you! Your delivery will arrive as soon as possible");
     }
   });
 });
