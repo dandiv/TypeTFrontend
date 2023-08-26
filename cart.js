@@ -3,31 +3,73 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartTotal = document.getElementById("cart-total");
   const purchaseBtn = document.getElementById("purchase-btn");
   const purchaseForm = document.getElementById("purchase-form");
+  const username = localStorage.username;
+  let userCartItems = [];
 
-  // Sample data of items in the cart (replace with actual data from your server)
-  const itemsInCart = [
-    {
-      id: 1,
-      title: "Item 1",
-      price: 10.0,
-      quantity: 2,
-      image: "item1.jpg",
+  // get user's items from server
+  fetch("http://localhost:3000/user/cart/" + username, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      id: 2,
-      title: "Item 2",
-      price: 15.0,
-      quantity: 1,
-      image: "item2.jpg",
-    },
-  ];
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((itemsIds) => {
+      const fetchPromises = [];
+
+      // Iterate over item IDs and send a fetch request for each
+      itemsIds.forEach((id) => {
+        const fetchPromise = fetch("http://localhost:3000/item/" + id, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const foundItem = userCartItems.find((item) => item.id === id);
+            if (foundItem) {
+              foundItem.quantity++;
+            } else {
+              const cartItem = {
+                id: id,
+                title: data.title,
+                price: data.price,
+                quantity: 1,
+                image: data.img,
+              };
+              userCartItems.push(cartItem);
+            }
+          });
+
+        fetchPromises.push(fetchPromise);
+      });
+
+      return Promise.all(fetchPromises);
+    })
+    .then(() => {
+      displayCartItems();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
   // Function to display items in the cart
   function displayCartItems() {
     cartItems.innerHTML = "";
     let totalPrice = 0;
 
-    itemsInCart.forEach((item) => {
+    userCartItems.forEach((item) => {
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("cart-item");
 
@@ -62,7 +104,4 @@ document.addEventListener("DOMContentLoaded", function () {
     checkoutForm.reset();
     purchaseForm.classList.add("hidden");
   });
-
-  // Initial display of cart items
-  displayCartItems();
 });
