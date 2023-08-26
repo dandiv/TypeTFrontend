@@ -1,8 +1,5 @@
-import { API_KEY, ENVIRONMENT } from "./config.js";
 // Mark image
 let map;
-const image = "assets/TypeTLogoBlack.png";
-
 // initMap is now async
 async function initMap() {
   // Request libraries when needed, not in the script tag.
