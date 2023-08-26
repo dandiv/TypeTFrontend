@@ -126,40 +126,42 @@ function createGridItems(cardsData) {
   currentRow.classList.add("row", "m-4");
   container.appendChild(currentRow);
 
-  cardsData.forEach((result, idx) => {
-    var colDiv = document.createElement("div");
-    colDiv.classList.add("col-md-3", "d-flex", "align-items-stretch");
+  if (cardsData) {
+    cardsData.forEach((result, idx) => {
+      var colDiv = document.createElement("div");
+      colDiv.classList.add("col-md-3", "d-flex", "align-items-stretch");
 
-    if (idx % 4 === 0 && idx > 0) {
-      container.appendChild(currentRow);
-      currentRow = document.createElement("div");
-      currentRow.classList.add("row", "m-4");
-    }
+      if (idx % 4 === 0 && idx > 0) {
+        container.appendChild(currentRow);
+        currentRow = document.createElement("div");
+        currentRow.classList.add("row", "m-4");
+      }
 
-    // Construct card content
-    colDiv.innerHTML = `
-      <div class="col p-3 d-flex align-items-stretch">
-        <div id=${result._id} class="card">
-          <img src=${result.img} class="card-img-top" alt="itemInage">
-          <div class="card-body">
-            <h5 class="card-title">${result.title}</h5>
-            <p class="card-text">${result.description}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">${result.price} ₪</li>
-          </ul>
-          <div class="card-body">
-            <button type="button" class="btn btn-secondary">Buy Now</button>
-            <button type="button" class="btn btn-secondary add-to-cart">Add to Cart</button>
+      // Construct card content
+      colDiv.innerHTML = `
+        <div class="col p-3 d-flex align-items-stretch">
+          <div id=${result._id} class="card">
+            <img src=${result.img} class="card-img-top" alt="itemInage">
+            <div class="card-body">
+              <h5 class="card-title">${result.title}</h5>
+              <p class="card-text">${result.description}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">${result.price} ₪</li>
+            </ul>
+            <div class="card-body">
+              <button type="button" class="btn btn-secondary">Buy Now</button>
+              <button type="button" class="btn btn-secondary add-to-cart">Add to Cart</button>
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
-    currentRow.appendChild(colDiv);
-  });
+      currentRow.appendChild(colDiv);
+    });
 
-  container.appendChild(currentRow);
+    container.appendChild(currentRow);
+  }
 }
 
 // Add item to cart
@@ -197,20 +199,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const minPrice = parseFloat(document.getElementById("minPrice").value);
     const maxPrice = parseFloat(document.getElementById("maxPrice").value);
 
-    fetch(
-      `http://localhost:3000/item/price/${minPrice}/${maxPrice}?color=${colorFilter}&size=${sizeFilter}`
-    )
+    const params = {};
+
+    if (colorFilter) {
+      params.color = colorFilter;
+    }
+    if (sizeFilter) {
+      params.size = sizeFilter;
+    }
+    if (!Number.isNaN(minPrice)) {
+      params.minPrice = minPrice;
+    }
+    if (!Number.isNaN(maxPrice)) {
+      params.maxPrice = maxPrice;
+    }
+
+    const query = new URLSearchParams(params).toString();
+
+    fetch(`http://localhost:3000/item/filtered?${query}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         cards = data;
-        if (!cards) {
-          container.innerText("No results!");
+        if (!cards.length) {
+          alert(`No results for filter!`);
         } else {
           createGridItems(data);
         }
       })
       .catch((error) => {
         console.error("Error:", error);
+        alert(`Something went wrong. Please try again`);
       });
   });
 });
