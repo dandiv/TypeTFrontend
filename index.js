@@ -116,12 +116,18 @@ function createGridItems() {
   container.appendChild(currentRow);
 
   cards.forEach((result, idx) => {
-    const colDiv = document.createElement("div");
-    colDiv.classList.add("col-md-3");
+    var colDiv = document.createElement("div");
+    colDiv.classList.add("col-md-3", "d-flex", "align-items-stretch");
+
+    if (idx % 4 === 0 && idx > 0) {
+      container.appendChild(currentRow);
+      currentRow = document.createElement("div");
+      currentRow.classList.add("row", "m-4");
+    }
 
     // Construct card content
     colDiv.innerHTML = `
-      <div class="col p-3">
+      <div class="col p-3 d-flex align-items-stretch">
         <div id=${result._id} class="card">
           <img src=${result.img} class="card-img-top" alt="itemInage">
           <div class="card-body">
@@ -141,6 +147,8 @@ function createGridItems() {
 
     currentRow.appendChild(colDiv);
   });
+
+  container.appendChild(currentRow);
 }
 
 function addItemToCart(itemId) {
